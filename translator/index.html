@@ -28,16 +28,7 @@
 
     <script>
 
-        function translateText() {
-
-            document.getElementById(”result“).innerText =
-
-            ”這裡之後會顯示 AI 翻譯結果“;
-
-        }
-
-</script>
-async function translateText() {
+        fasync function translateText() {
     const input = document.getElementById("input").value;
     const resultDiv = document.getElementById("result");
 
@@ -84,8 +75,8 @@ ${input}
     } catch (error) {
         resultDiv.innerText = "錯誤：" + error;
     }
+  }
 }
-
 </script>
 
 </body>
