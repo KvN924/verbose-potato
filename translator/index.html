@@ -1,43 +1,84 @@
 <!DOCTYPE html>
+<script>
 
-<html>
+async function translateText() {
 
-<head>
+    const input = document.getElementById("input").value;
 
-    <title>文言文翻譯器</title>
+    const resultDiv = document.getElementById("result");
 
-</head>
+    resultDiv.innerText = "翻譯中...";
 
-<body>
+    const apiKey = "AQ.Ab8RN6JNCPYj99w962lUUae2fKr8oWpPiWapkUV72P0JGOuzWg";
 
-    <h1>文言文翻譯器</h1>
+    const prompt = `
 
-    <textarea id=”input“ rows=”8“ cols=”50“></textarea>
+你是一位高中國文老師，請幫我處理以下文言文：
 
-    <br><br>
+1. 白話翻譯
 
-    <button onclick=”translateText()“>
+2. 重點字詞解釋
 
-        翻譯
+3. 考試重點
 
-    </button>
+4. 一句話總結
 
-    <h2>結果</h2>
+文言文：
 
-    <div id=”result“></div>
+${input}
 
-    <script>
+`;
 
-        function translateText() {
+    try {
 
-            document.getElementById(”result“).innerText =
+        const response = await fetch(
 
-            ”這裡之後會顯示 AI 翻譯結果“;
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
 
-        }
+            {
 
-    </script>
+                method: "POST",
 
-</body>
+                headers: {
 
-</html>
+                    "Content-Type": "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    contents: [
+
+                        {
+
+                            parts: [
+
+                                { text: prompt }
+
+                            ]
+
+                        }
+
+                    ]
+
+                })
+
+            }
+
+        );
+
+        const data = await response.json();
+
+        const output = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        resultDiv.innerText = output || "沒有回應，請再試一次";
+
+    } catch (error) {
+
+        resultDiv.innerText = "錯誤：" + error;
+
+    }
+
+}
+
+</script>
